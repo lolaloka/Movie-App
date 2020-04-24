@@ -1,55 +1,64 @@
-const { Genre, validate } = require('../models/geners.model')
+const MovieService = require('./../@core/services/movie.service')
+const { validate, Genre } = require('../models/geners.model')
+const Exceptions = require('./../@core/exceptions/index')
+const { isNotNumber } = require('./../@core/helpers/validate-number.function')
 
 module.exports = {
   getMoviesList: async (req, res) => {
     try {
-      const genres = await Genre.find().sort('name')
+      const { sortBy } = req.query
+      const genres = await MovieService.getMovieList(sortBy)
       res.send(genres)
     } catch (exc) {
       res.status(500).json({ message: exc.message || exc, error: true })
     }
   },
   getMovieById: async (req, res) => {
-    const genre = await Genre.findById(req.params.id)
-    if (!genre) { return res.status(404).send('The Genre with The Given Id Is not Found') }
-    res.send(genre)
+    try {
+      const { id } = req.params
+      if (isNotNumber(id)) {
+        throw Exceptions.throwParameterEexcpetion(
+          'Invalid movie id',
+          ['id'],
+          'PARAMz5AX'
+        )
+      }
+      const genre = await MovieService.getMovieById(id)
+      return genre
+    } catch (exc) {
+      res.status(exc.status || 500).send(exc)
+    }
   },
   createNewMovide: async (req, res) => {
-    const { error } = validate(req.body)
-    if (error) {
-      res.status(400).send(error.details[0].message)
+    try {
+      const movie = req.body
+      const { error } = validate(movie)
+      if (error) {
+        throw error
+      }
+      const createdMovie = await MovieService.createNewMovie(req.body)
+      res.send(createdMovie)
+    } catch (exc) {
+      res.status(exc.status || 500).send(exc)
     }
-    // If the incoming movie exist, don't create and send status error.
-    const existingMovie = await Genre.findOne({ name: req.body.name.trim() })
-    if (existingMovie) {
-      res.status(400).json({ message: 'It seems you want to create an exsiting movie.', error: true })
-      return
-    }
-    let genre = new Genre({ name: req.body.name })
-    genre = await genre.save()
-    res.status(201).send(genre)
   },
   updateMovie: async (req, res) => {
-    const { error } = validate(req.body)
-    if (error) return res.status(404).send(error.details[0].message)
-    // if the passed id is invalid id, return not found status error.
-    const movieToUpdate = await Genre.findById(req.params.id)
-    if (!movieToUpdate) { return res.status(404).json({ message: 'Movie not found ' }) }
-    // if the incoming update object is the same current object, don't update
-    if (movieToUpdate.name === req.body.name) {
-      return res.status(400).json({ message: 'it seems your update is the current value.' })
+    try {
+      const { id } = req.params
+      if (isNotNumber(id)) {
+        throw Exceptions.throwParameterEexcpetion('invalid movie id', ['id'], 'PAQE54zxx')
+      }
+      const movieValueToUpdate = req.body
+      const { error } = validate(movieValueToUpdate)
+      if (error) {
+        throw Exceptions.throwParameterEexcpetion(error.details[0].message, [''], 'PAUPD8q7x')
+      }
+
+      const updateResult = await MovieService.updateMovie(id, movieValueToUpdate)
+      res.send(updateResult)
+    } catch (exc) {
+      res.status(exc.status || 500).json(exc)
     }
-    movieToUpdate.name = req.body.name.trim()
-    const result = await movieToUpdate.save()
-    return res.send(result)
-    // const genre = await Genre.findByIdAndUpdate(
-    //   req.params.id,
-    //   { name: req.body.name },
-    //   { new: true }
-    // );
-    // if (!genre)
-    //   return res.status(404).send("The Genre with The Given Id Is not Found");
-    // res.send(genre);
   },
   deleteMovies: async (req, res) => {
     try {
@@ -60,12 +69,7 @@ module.exports = {
       }
       moviesToDelete.map(async (m) => await m.remove())
       return res.send(moviesToDelete.map(m => m.id))
-      // const genre = await Genre.findOne({ _id: req.params.id })
-      // if (!genre) { return res.status(404).send(' The Genre with The Given Id Is not Found') }
-      // await genre.remove()
-      // res.send(genre)
     } catch (exc) {
-      console.log(exc)
       res.status(500).send(exc)
     }
   }
