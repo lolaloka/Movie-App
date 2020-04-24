@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Joi = require("joi");
+const mongoose = require('mongoose')
+const Joi = require('joi')
 const customerSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -16,9 +16,9 @@ const customerSchema = new mongoose.Schema({
     minlength: 5,
     trim: true
   }
-});
-const Customer = new mongoose.model("Customer", customerSchema);
-function validationCustomer(customer) {
+})
+const Customer = mongoose.model('Customer', customerSchema)
+function validationCustomer (customer) {
   const customerDetails = {
     name: Joi.string()
       .required()
@@ -30,8 +30,8 @@ function validationCustomer(customer) {
       .min(5)
       .max(15)
       .trim()
-  };
-  return Joi.validate(customer, customerDetails);
+  }
+  return Joi.validate(customer, customerDetails)
 }
-exports.Customer = Customer;
-exports.validate = validationCustomer;
+exports.Customer = Customer
+exports.validate = validationCustomer
