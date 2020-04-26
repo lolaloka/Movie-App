@@ -1,18 +1,10 @@
 const genres = require('./routes/genres')
+require('./models/db')
 const customers = require('./routes/customers')
 const express = require('express')
 
 const app = express()
-const mongoose = require('mongoose')
-const dbUrl = 'mongodb://localhost/movies'
-mongoose
-  .connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Connected to DB Successfully')
-  })
-  .catch(() => {
-    console.log('Error Occured')
-  })
+
 app.use(express.json())
 
 app.use('/api/genres', genres)

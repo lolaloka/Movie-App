@@ -1,4 +1,5 @@
 module.exports = {
+  // JSDOC
   /**
    * @param {string} msg The error message
    * @param {number} excptionCode The exception code of the movie project to identifiy what is the case exception appears.
