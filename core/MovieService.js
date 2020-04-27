@@ -43,7 +43,7 @@ module.exports = {
     genre.set({
       name: genreName,
     });
-    const SavedCoures = await genre.save();
-    return SavedCoures;
+    const updateResult = await genre.save();
+    return updateResult;
   },
 };

@@ -1,0 +1,7 @@
+<ul>
+  <li *ngFor="let movie of movies">
+    <a routerLink="{{ movie._id + '/update' }}">
+      {{ movie.name }}
+    </a>
+  </li>
+</ul>

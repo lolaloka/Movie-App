@@ -46,20 +46,11 @@ module.exports = {
     try {
       const { error } = validate(req.body);
       if (error) return res.status(404).send(error.details[0].message);
-
-      movieService.UpdateAgenre(req.params.id, req.body.name);
-
-      // const genre = await Genre.findById(req.params.id);
-      // //  console.log("Id is ", genre._id);
-      // if (!genre)
-      //   res.status(400).send("The Genre with The Given Id Is not Found");
-      // if (genre.name === req.body.name)
-      //   return res.status(400).send("it seems that its has the same name");
-      // genre.set({
-      //   name: req.body.name
-      // });
-      // const SavedCoures = await genre.save();
-      res.send(SavedCoures);
+      const updatedMovie = await movieService.UpdateAgenre(
+        req.params.id,
+        req.body.name
+      );
+      res.send(updatedMovie);
     } catch (error) {
       console.error(error);
       res.status(500).send(error);
