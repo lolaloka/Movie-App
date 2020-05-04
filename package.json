@@ -4,24 +4,33 @@
   "description": "",
   "main": "root.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node root.js",
     "start:dev": "nodemon root.js",
     "lint:fix": "eslint --fix ."
+=======
+    "start:dev": "nodemon root.js"
+>>>>>>> bf8f08ab7006a2162053bcbe9f6d8e7cdfb8e60a
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "joi": "^14.3.1",
     "mongoose": "^5.9.10"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1"
+=======
+    "nodemon": "2.0.2"
+>>>>>>> bf8f08ab7006a2162053bcbe9f6d8e7cdfb8e60a
   }
 }
