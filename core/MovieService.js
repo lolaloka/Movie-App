@@ -20,12 +20,12 @@ module.exports = {
       throw error;
     }
   },
-  CreateNewgenre: async (name) => {
-    let genre = new Genre({ genreName: name });
+  CreateNewgenre: async (movie) => {
+    let genre = new Genre(movie);
     genre = await genre.save();
     return genre;
   },
-  UpdateAgenre: async (id, genreName) => {
+  UpdateAgenre: async (id, movie) => {
     const genre = await Genre.findById(id);
     console.log(genre);
     if (!genre)
@@ -33,16 +33,14 @@ module.exports = {
         msg: " No Genre With the Given Id ",
         codeExeptions: "NFCS0H2",
       };
-    if (genre.name === genreName)
+    if (genre.name === movie.name)
       throw {
         msg: " it seems that No changes happend ",
         codeExeptions: "NFCS0H2",
       };
     // res.status(400).send("The Genre with The Given Id Is not Found");
     //  return res.status(400).send("it seems that its has the same name");
-    genre.set({
-      name: genreName,
-    });
+    genre.set(movie);
     const updateResult = await genre.save();
     return updateResult;
   },

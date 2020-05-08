@@ -6,6 +6,10 @@ const genreSchema = new mongoose.Schema({
     required: true,
     minlength: 5,
     maxlength: 25
+  },
+  imgUrl: {
+    type: String,
+    required: false
   }
 })
 const Genre = mongoose.model('Genre', genreSchema)
@@ -14,7 +18,8 @@ function validationGener (generes) {
     name: Joi.string()
       .required()
       .min(5)
-      .max(15)
+      .max(15),
+    imgUrl: Joi.string()
   }
   return Joi.validate(generes, genreShape)
 }

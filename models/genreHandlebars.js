@@ -36,7 +36,7 @@ module.exports = {
       }
       // let genre = new Genre({ name: req.body.name });
       // genre = await genre.save();
-      movieService.CreateNewgenre(req.body.name);
+      const genre = await movieService.CreateNewgenre(req.body);
       res.send(genre);
     } catch (err) {
       res.status(500).send(err)
@@ -48,7 +48,7 @@ module.exports = {
       if (error) return res.status(404).send(error.details[0].message);
       const updatedMovie = await movieService.UpdateAgenre(
         req.params.id,
-        req.body.name
+        req.body
       );
       res.send(updatedMovie);
     } catch (error) {

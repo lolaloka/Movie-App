@@ -1,9 +1,10 @@
 const { Genre, validate } = require('../models/geners.model')
-const MovieService = require('./../services/moviesSercvices')
+const movieService = require('./../services/moviesSercvices')
 module.exports = {
   getAllGenres: async (req, res) => {
     try {
-      const moveis = await MovieService.getAllGenre()
+      const { sortBy, searchTerm } = req.query;
+      const moveis = await movieService.getAllGenre(sortBy, searchTerm)
       res.send(moveis)
     } catch (error) {
       res.status(500).send('Some thing Error Now ')
@@ -12,7 +13,7 @@ module.exports = {
   },
   getSpecificGenre: async (req, res) => {
     try {
-      const genre = await MovieService.getSpecificGenre(req.params.id)
+      const genre = await movieService.getSpecificGenre(req.params.id)
       if (!genre) { return res.status(404).send('The Genre with The Given Id Is not Found') }
       res.send(genre)
     } catch (error) {
@@ -25,7 +26,7 @@ module.exports = {
       if (error) {
         res.status(404).send(error.details[0].message)
       }
-      const genre = MovieService.createGenre(req.body.name)
+      const genre = movieService.createGenre(req.body.name)
       res.send(genre)
     } catch (err) {
       res.status(500).send(err)
