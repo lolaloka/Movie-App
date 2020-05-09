@@ -21,8 +21,8 @@ module.exports = {
     const genre = await Genre.findById(id)
     return genre
   },
-  createGenre: async (name) => {
-    const genre = new Genre({ name })
+  createGenre: async (movie) => {
+    const genre = new Genre(movie)
     await genre.save()
 
     return genre

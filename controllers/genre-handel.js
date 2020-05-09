@@ -26,7 +26,7 @@ module.exports = {
       if (error) {
         res.status(404).send(error.details[0].message)
       }
-      const genre = movieService.createGenre(req.body.name)
+      const genre = movieService.createGenre(req.body)
       res.send(genre)
     } catch (err) {
       res.status(500).send(err)
@@ -40,11 +40,7 @@ module.exports = {
     //   //  console.log("Id is ", genre._id);
     //   if (!genre) { res.status(400).send('The Genre with The Given Id Is not Found') }
     //   if (genre.name === req.body.name) { return res.status(400).send('it seems that its has the same name') }
-    //   genre.set({
-    //     name: req.body.name
-    //   })
-    //   const SavedCoures = await genre.save()
-    //   res.send(SavedCoures)
+      res.send( await Genre.findByIdAndUpdate(req.params.id, req.body) );
     } catch (error) {
       // if (error instanceof NotFoundError) {
 
