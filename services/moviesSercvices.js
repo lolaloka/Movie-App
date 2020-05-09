@@ -7,14 +7,20 @@ class NotFoundError {
   }
 }
 module.exports = {
-  getAllGenre: async function (sortBy = 'name', searchTerm = undefined) {
+  getAllGenre: async function (sortBy = 'name', searchTerm = undefined, limit = 10, skip = 0) {
     const query = {};
 
+    if (skip) {
+      skip = (skip - 1) * limit
+    }
     if (searchTerm) {
       query.name = { $regex: new RegExp(searchTerm, 'gi') };
     }
     const genres = await Genre.find(query)
     .sort(sortBy)
+    .limit(limit)
+    .skip(skip);
+
     return genres
   },
   getSpecificGenre: async (id) => {

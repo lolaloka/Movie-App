@@ -3,10 +3,12 @@ const movieService = require('./../services/moviesSercvices')
 module.exports = {
   getAllGenres: async (req, res) => {
     try {
-      const { sortBy, searchTerm } = req.query;
-      const moveis = await movieService.getAllGenre(sortBy, searchTerm)
+      const { sortBy, searchTerm, limit, page } = req.query;
+      // parseInt(limit) === +limit
+      const moveis = await movieService.getAllGenre(sortBy, searchTerm, +limit, +page)
       res.send(moveis)
     } catch (error) {
+      console.error(error)
       res.status(500).send('Some thing Error Now ')
       //  console.log(error);
     }
