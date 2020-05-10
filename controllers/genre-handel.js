@@ -5,8 +5,8 @@ module.exports = {
     try {
       const { sortBy, searchTerm, limit, page } = req.query;
       // parseInt(limit) === +limit
-      const moveis = await movieService.getAllGenre(sortBy, searchTerm, +limit, +page)
-      res.send(moveis)
+      const { totalCount, rows } = await movieService.getAllGenre(sortBy, searchTerm, +limit, +page)
+      res.send({ totalCount, rows })
     } catch (error) {
       console.error(error)
       res.status(500).send('Some thing Error Now ')

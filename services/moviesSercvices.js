@@ -13,15 +13,17 @@ module.exports = {
     if (skip) {
       skip = (skip - 1) * limit
     }
+    
     if (searchTerm) {
       query.name = { $regex: new RegExp(searchTerm, 'gi') };
     }
+    const totalCount = await Genre.countDocuments(query)
     const genres = await Genre.find(query)
     .sort(sortBy)
     .limit(limit)
     .skip(skip);
 
-    return genres
+    return { totalCount, rows: genres }
   },
   getSpecificGenre: async (id) => {
     const genre = await Genre.findById(id)
