@@ -1,28 +1,25 @@
-const { Genre, validate } = require("../models/geners.model");
+const { Genre, validate } = require("./geners.model");
 const movieService = require("../core/MovieService");
-const handleException = require("./../helpers/Exceptions/exception.handler");
-// class Execptions {
-//   constructor(msg, status, execptionCode) {
-//     this.msg = msg;
-//     this.status = status;
-//     this.execptionCode = execptionCode;
-//   }
-// }
+const handleException = require("../helpers/Exceptions/exception.handler");
+
 module.exports = {
   GetAllGenres: async (req, res) => {
     try {
-      const genres = await movieService.getListMovies();
-      // if (!genres) return console.log("No Genres To Show ");
-      // const genres = await Genre.find().sort("name");
-      res.send(genres);
+      const { sortBy, searchTerm } = req.query;
+      console.log(req.query);
+      const genre = await movieService.getListMovies(sortBy, searchTerm);
+      res.send(genre);
     } catch (error) {
-      handleException(error, res);
+      // handleException(error, res);
+      console.log(error);
+      // res.status(error.statusCode || 500).send(error);
     }
   },
   Getspecificgenre: async (req, res) => {
     try {
       const genre = await movieService.getMovieById(req.params.id);
       res.send(genre);
+      //    if (!genre) throw res.send(genre);
     } catch (error) {
       handleException(error, res);
       // res.status(error.statusCode || 500).send(error);
@@ -32,11 +29,10 @@ module.exports = {
     try {
       const { error } = validate(req.body);
       if (error) {
-        res.status(404).send(error.details[0].message);
+        res.status(400).send(error.details[0].message);
       }
-      // let genre = new Genre({ name: req.body.name });
-      // genre = await genre.save();
-      movieService.CreateNewgenre(req.body.name);
+      let genre;
+      genre = await movieService.CreateNewgenre(req.body);
       res.send(genre);
     } catch (err) {
       res.status(500).send(err);
@@ -45,10 +41,10 @@ module.exports = {
   UpdateAgenre: async (req, res) => {
     try {
       const { error } = validate(req.body);
-      if (error) return res.status(404).send(error.details[0].message);
+      if (error) return res.status(400).send(error.details[0].message);
       const updatedMovie = await movieService.UpdateAgenre(
         req.params.id,
-        req.body.name
+        req.body
       );
       res.send(updatedMovie);
     } catch (error) {

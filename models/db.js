@@ -5,8 +5,8 @@ mongoose
   .then(() => {
     console.log("Connected Successfully");
   })
-  .catch(() => {
-    console.log("Error Occured");
+  .catch((err) => {
+    console.log("Error Occured", err);
   });
 
 module.exports = mongoose;

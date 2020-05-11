@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 // const handbars = require("../controllers/handelbars");
-const handbars = require("../models/genreHandlebars");
+const handbars = require("../models/genreHandlers");
 // Get All Movies
 router.get("/", handbars.GetAllGenres);
 // Get specifi cgenre

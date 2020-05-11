@@ -1,9 +1,14 @@
 const { Genre } = require("../models/geners.model");
-const Exception = require("../helpers/Exceptions/index").Exception;
+const { Exception } = require("../helpers/Exceptions/index");
 module.exports = {
-  getListMovies: async () => {
+  getListMovies: async (sortBy = "name", searchTerm = undefined) => {
     try {
-      const movies = await Genre.find().sort("name");
+      const query = {};
+      if (searchTerm) {
+        query.name = { $regex: new RegExp(searchTerm, "gi") };
+      }
+      // const movies = await Genre.find({name:{$regex:new RegExp(searchTerm, "gi")}}).sort(sortBy);
+      const movies = await Genre.find(query).sort(sortBy);
       return movies;
     } catch (exc) {
       throw exc;
@@ -20,29 +25,29 @@ module.exports = {
       throw error;
     }
   },
-  CreateNewgenre: async (name) => {
-    let genre = new Genre({ genreName: name });
-    genre = await genre.save();
-    return genre;
+  CreateNewgenre: async (movie) => {
+    try {
+      let genre = new Genre(movie);
+      genre = await genre.save();
+      return genre;
+    } catch (error) {
+      throw error;
+    }
   },
-  UpdateAgenre: async (id, genreName) => {
+  UpdateAgenre: async (id, movie) => {
     const genre = await Genre.findById(id);
-    console.log(genre);
     if (!genre)
       throw {
         msg: " No Genre With the Given Id ",
         codeExeptions: "NFCS0H2",
       };
-    if (genre.name === genreName)
+    if (genre.name === movie.name)
       throw {
         msg: " it seems that No changes happend ",
         codeExeptions: "NFCS0H2",
       };
-    // res.status(400).send("The Genre with The Given Id Is not Found");
-    //  return res.status(400).send("it seems that its has the same name");
-    genre.set({
-      name: genreName,
-    });
+
+    genre.set(movie);
     const updateResult = await genre.save();
     return updateResult;
   },
