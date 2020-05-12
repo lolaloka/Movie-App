@@ -1,6 +1,8 @@
 const genres = require("./routes/genres");
 require("./models/db");
 const customers = require("./routes/customers");
+const authRouter = require('./routes/auth.router');
+
 const express = require("express");
 const cors = require("cors");
 
@@ -10,6 +12,7 @@ app.use(express.json());
 
 app.use('/api/genres', genres)
 app.use('/api/customers', customers)
+app.use('/api/auth', authRouter)
 // app.get("/", (req, res) => {
 //   res.send("in dir home ");
 // });
