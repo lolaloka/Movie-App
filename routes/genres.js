@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
 // const handbars = require("../controllers/handelbars");
-const handbars = require("../models/genreHandlers");
+const handlers = require("../controller/genreHandlers");
 // Get All Movies
-router.get("/", handbars.GetAllGenres);
+router.get("/", handlers.GetAllGenres);
 // Get specifi cgenre
-router.get("/:id", handbars.Getspecificgenre);
+router.get("/:id", handlers.Getspecificgenre);
 // Create New genre
-router.post("/", handbars.CreateNewgenre);
+router.post("/", handlers.CreateNewgenre);
 // Update existing gener
-router.put("/:id", handbars.UpdateAgenre);
+router.put("/:id", handlers.UpdateAgenre);
 // Delete an existing gener
-router.delete("/:id", handbars.DeleteAGenre);
+router.delete("/:id", handlers.DeleteAGenre);
 // Delete All
-router.delete("/", handbars.DeleteAllGenre);
+router.delete("/", handlers.DeleteAllGenre);
 
 module.exports = router;

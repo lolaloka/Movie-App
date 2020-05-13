@@ -1,4 +1,4 @@
-const { Genre, validate } = require("./geners.model");
+const { Genre, validate } = require("../models/geners.model");
 const movieService = require("../core/MovieService");
 const handleException = require("../helpers/Exceptions/exception.handler");
 
